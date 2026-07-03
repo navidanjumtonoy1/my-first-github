@@ -1,17 +1,51 @@
 
 
-
+# one time each project to start git
 git init
+
+# . mane holo sob add kore fela. but file name dile just oi file e add korbe.
+#every time to add something
 git add .
-git commit -m "first commit"
+
+
+
+git commit -m "first commit"                (see-1)               
 git branch -M main
-git remote add origin https://github.com/navidanjumtonoy1/my-first-github.git
+
+# eta protita repository er jonno akbar korte hobe
+git remote add origin https://github.com/navidanjumtonoy1/my-first-github.git           (see-2)
+
+
 git push -u origin main
 
 
 …or push an existing repository from the command line
 
 
-git remote add origin https://github.com/navidanjumtonoy1/my-first-github.git
+git remote add origin https://github.com/navidanjumtonoy1/my-first-github.git              
 git branch -M main
 git push -u origin main
+
+--------------------------------------------------------
+see-1
+
+git commit -m "first commit" mere enter marle prothome eita set korte bolbe ja akta computer er jonno ak bar e set korte hoy.
+
+git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+then
+git config --global --list        or -l
+
+then
+git commit -m "first commit"
+
+
+--------------------------
+file er pashe m mane modify kora hoyese kisu
+file er pashe u mane untruck orthat ekhono truck kora hoy ni. add korar por truck kora suru korbe.
+
+---------------------
+see-2
+
+git remote -v     bolle bole dibe kothay jasse

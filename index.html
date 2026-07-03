@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Git, GitHub & Hosting Cheat Sheet for Beginners</title>
+
+  <style>
+    /* =========================================================
+       GIT, SOURCE CONTROL, GITHUB & HOSTING CHEAT SHEET
+       Beginner-friendly | Bangla + English | Internal CSS only
+       Responsive: 2-column desktop/tablet, 1-column mobile
+       Printable with Ctrl + P
+       ========================================================= */
+
+    :root {
+      --navy: #073b7a;
+      --navy-dark: #03234a;
+      --page-bg: #edf5fc;
+      --white: #ffffff;
+      --yellow: #ffd233;
+      --yellow-soft: #fff7d8;
+      --green-soft: #edf9ed;
+      --blue-soft: #eef6ff;
+      --red-soft: #fff0f0;
+      --text: #1f2937;
+      --muted: #627086;
+      --border: #b8cde4;
+      --shadow: 0 10px 26px rgba(3, 35, 74, 0.12);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, "Noto Sans Bengali", "Hind Siliguri", "SolaimanLipi", sans-serif;
+      background: var(--page-bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255, 210, 51, 0.18), transparent 28%),
+        linear-gradient(135deg, var(--navy-dark), var(--navy));
+      color: var(--white);
+      padding: 56px 18px 46px;
+      text-align: center;
+      border-bottom: 8px solid var(--yellow);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 4.8rem);
+      font-weight: 950;
+      letter-spacing: 0.5px;
+      line-height: 1.05;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+      color: var(--yellow);
+    }
+
+    .hero p {
+      color: #dcecff;
+      font-size: clamp(1rem, 2.4vw, 1.35rem);
+      font-weight: 700;
+    }
+
+    .badges {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .badge {
+      border: 1.5px solid rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    .wrap {
+      width: min(1160px, calc(100% - 32px));
+      margin: 30px auto;
+    }
+
+    .intro {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .intro h2 {
+      color: var(--navy);
+      margin-bottom: 8px;
+      font-size: 1.45rem;
+    }
+
+    .intro p {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      break-inside: avoid;
+    }
+
+    .card-title {
+      background: var(--navy);
+      color: var(--white);
+      padding: 13px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--navy-dark);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 950;
+      flex-shrink: 0;
+    }
+
+    .card-title h3 {
+      font-size: 1.05rem;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .label {
+      color: var(--navy);
+      font-size: 0.85rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: -5px;
+    }
+
+    pre {
+      background: var(--yellow-soft);
+      border: 1px solid #efc35f;
+      border-radius: 10px;
+      padding: 12px;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      color: #14213d;
+      font-size: 0.9rem;
+    }
+
+    .need,
+    .explain,
+    .note,
+    .mistake {
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.94rem;
+    }
+
+    .need {
+      background: #fbfdff;
+      border-left: 5px solid var(--yellow);
+    }
+
+    .explain {
+      background: var(--blue-soft);
+      border-left: 5px solid var(--navy);
+    }
+
+    .note {
+      background: var(--green-soft);
+      border-left: 5px solid #53a653;
+    }
+
+    .mistake {
+      background: var(--red-soft);
+      border-left: 5px solid #e05252;
+    }
+
+    .section-block {
+      margin-top: 38px;
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      break-inside: avoid;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.65rem, 4vw, 2.55rem);
+      line-height: 1.1;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .shortcut-section {
+      background: var(--yellow-soft);
+      border: 1px solid #eed06b;
+      border-top: 8px solid var(--yellow);
+    }
+
+    .shortcut-grid,
+    .viva-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .shortcut-card,
+    .viva-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid rgba(7, 59, 122, 0.18);
+    }
+
+    .shortcut-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .shortcut-head span {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--yellow);
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .shortcut-head h3,
+    .viva-card h3 {
+      color: var(--navy);
+      font-size: 1rem;
+    }
+
+    .shortcut-card p,
+    .viva-card p {
+      margin-top: 6px;
+      font-size: 0.94rem;
+    }
+
+    .tiny-note {
+      background: var(--green-soft);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+
+    .summary-section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 8px solid var(--navy);
+    }
+
+    .summary-columns {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .summary-box {
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      background: #fbfdff;
+    }
+
+    .summary-box h3 {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .summary-box ul {
+      padding-left: 20px;
+    }
+
+    .summary-box li {
+      margin-bottom: 8px;
+    }
+
+    .viva-section {
+      background: linear-gradient(135deg, var(--navy-dark), #071f42);
+      border-top: 8px solid var(--yellow);
+    }
+
+    .viva-section .section-head h2,
+    .viva-section .section-head p {
+      color: var(--white);
+    }
+
+    .viva-card {
+      border: 1px solid rgba(255, 210, 51, 0.65);
+    }
+
+    .footer {
+      margin-top: 34px;
+      background: var(--navy-dark);
+      color: var(--white);
+      text-align: center;
+      padding: 24px 16px;
+      border-top: 6px solid var(--yellow);
+      font-weight: 800;
+    }
+
+    .footer span {
+      color: var(--yellow);
+    }
+
+    @media (max-width: 760px) {
+      .wrap {
+        width: min(100% - 22px, 1160px);
+        margin: 18px auto;
+      }
+
+      .hero {
+        padding: 40px 14px 34px;
+      }
+
+      .grid,
+      .shortcut-grid,
+      .summary-columns,
+      .viva-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .intro,
+      .section-block,
+      .card-body {
+        padding: 14px;
+      }
+
+      code {
+        font-size: 0.84rem;
+      }
+    }
+
+    @page {
+      size: A4;
+      margin: 12mm;
+    }
+
+    @media print {
+      body {
+        background: var(--white);
+      }
+
+      .hero,
+      .card-title,
+      .section-block,
+      .summary-box h3,
+      .footer,
+      pre,
+      .need,
+      .explain,
+      .note,
+      .mistake {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .wrap {
+        width: 100%;
+        margin: 14px auto;
+      }
+
+      .card,
+      .intro,
+      .shortcut-card,
+      .summary-box,
+      .viva-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <h1><span>GIT, GITHUB</span> & HOSTING CHEAT SHEET</h1>
+    <p>Practical Source Control Guide for Beginners — 2026</p>
+    <div class="badges">
+      <span class="badge">Beginner Friendly</span>
+      <span class="badge">Practical Guide</span>
+      <span class="badge">Bangla + English</span>
+      <span class="badge">Shortcuts Included</span>
+      <span class="badge">Printable</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="intro">
+      <h2>এই Cheat Sheet কীভাবে ব্যবহার করবে?</h2>
+      <p>
+        প্রতিটি card-এ আছে real coding need, short command/example, সহজ Bangla explanation,
+        beginner note এবং common mistake। Main topics শেষ হলে আছে VS Code/Terminal/Git shortcuts,
+        mistakes vs best practices এবং viva Q&A।
+      </p>
+    </section>
+
+    <section class="grid">
+      
+      <article class="card">
+        <div class="card-title">
+          <span class="num">1</span>
+          <h3>What is Version Control?</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Project code-এর change history track করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Version Control = change tracking system</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Version control code-এর previous version save করে, তাই ভুল হলে আগের অবস্থায় ফেরা যায়।</p>
+          <p class="note">💡 <strong>Note:</strong> একজন developer হলেও version control use করা professional habit।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Only final file save করে old versions হারিয়ে ফেলা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">2</span>
+          <h3>What is Git?</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Local computer-এ code history manage করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git --version</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Git হলো distributed version control system। এটি code changes track করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Git তোমার computer-এ কাজ করে, internet লাগবেই এমন না।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Git install না করে GitHub use করতে চাওয়া।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">3</span>
+          <h3>What is GitHub?</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Online-এ repository store, share এবং collaborate করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>https://github.com</code></pre>
+          <p class="explain"><strong>Explanation:</strong> GitHub হলো Git repositories host করার online platform।</p>
+          <p class="note">💡 <strong>Note:</strong> Portfolio project রাখতে GitHub খুব important।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Git আর GitHub একই জিনিস ভাবা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">4</span>
+          <h3>Difference between Git and GitHub</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Tool আর online platform-এর পার্থক্য বুঝতে।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Git = local tool
+GitHub = online platform</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Git code history manage করে, GitHub সেই Git repository online রাখে।</p>
+          <p class="note">💡 <strong>Note:</strong> Git ছাড়া GitHub workflow ভালোভাবে বোঝা কঠিন।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> GitHub account থাকলেই Git শেখা হয়ে গেছে ভাবা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">5</span>
+          <h3>Source Control Meaning</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Code changes organize এবং manage করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Source Control = managing code changes</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Source control মানে source code-এর changes track, compare, save এবং share করা।</p>
+          <p class="note">💡 <strong>Note:</strong> VS Code Source Control panel Git কাজ সহজ করে।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Source control ছাড়া বড় project manage করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">6</span>
+          <h3>Installing Git</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Git command use করার জন্য Git install দরকার।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Download Git from official website
+Then install it</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Git install করলে terminal-এ git command চালানো যায়।</p>
+          <p class="note">💡 <strong>Note:</strong> Install শেষে terminal restart করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Install করার পর git --version check না করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">7</span>
+          <h3>Checking Git Version</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Git properly install হয়েছে কিনা check করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git --version</code></pre>
+          <p class="explain"><strong>Explanation:</strong> এই command installed Git version দেখায়।</p>
+          <p class="note">💡 <strong>Note:</strong> প্রথম Git setup-এর পর এই command run করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Command না চললে Git PATH issue হতে পারে।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">8</span>
+          <h3>Git Configuration</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Commit history-তে author name/email show করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git config --global user.name &quot;Eng. P&quot;
+git config --global user.email &quot;you@example.com&quot;</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Git config তোমার commit author information set করে।</p>
+          <p class="note">💡 <strong>Note:</strong> GitHub email-এর সাথে মিল থাকলে ভালো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Wrong email দিয়ে commit করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">9</span>
+          <h3>Repository Meaning</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Project folder-এর Git-tracked version।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Repository = project + Git history</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Repository হলো এমন project folder যেখানে Git changes track করে।</p>
+          <p class="note">💡 <strong>Note:</strong> প্রতিটি project-এর জন্য আলাদা repo রাখো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> সব project এক repo-তে মিশিয়ে ফেলা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">10</span>
+          <h3>Local vs Remote Repository</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Computer আর online repository-এর difference বোঝা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Local repo = your computer
+Remote repo = GitHub/online</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Local repo তোমার PC-তে থাকে, remote repo GitHub-এর মতো online platform-এ থাকে।</p>
+          <p class="note">💡 <strong>Note:</strong> Push করলে local changes remote-এ যায়।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Local save করলেই GitHub-এ upload হয়েছে ভাবা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">11</span>
+          <h3>Working Directory, Staging Area, Repository</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Git flow বোঝার জন্য core concept।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Working directory → git add → staging → git commit → repository</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Working directory-তে edit হয়, staging-এ selected changes যায়, commit হলে repo history-তে save হয়।</p>
+          <p class="note">💡 <strong>Note:</strong> এই flow Git শেখার foundation।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> git add ছাড়া commit করলে অনেক change বাদ পড়ে যায়।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">12</span>
+          <h3>git init</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> New project folder-কে Git repository বানানো।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git init</code></pre>
+          <p class="explain"><strong>Explanation:</strong> এই command current folder-এ hidden .git folder তৈরি করে।</p>
+          <p class="note">💡 <strong>Note:</strong> New local project শুরু করলে git init run করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Wrong folder-এ git init চালানো।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">13</span>
+          <h3>git status</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Current project changes দেখা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git status</code></pre>
+          <p class="explain"><strong>Explanation:</strong> কোন file modified, staged, untracked তা দেখায়।</p>
+          <p class="note">💡 <strong>Note:</strong> প্রতিটি add/commit/push-এর আগে status check করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Status না দেখে ভুল file commit করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">14</span>
+          <h3>git add</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Changes staging area-তে পাঠানো।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git add index.html
+git add .</code></pre>
+          <p class="explain"><strong>Explanation:</strong> git add selected file বা সব changes commit-এর জন্য ready করে।</p>
+          <p class="note">💡 <strong>Note:</strong> git add . সব current changes stage করে।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> অপ্রয়োজনীয় file stage হয়ে যাওয়া।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">15</span>
+          <h3>git commit</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Project-এর saved snapshot তৈরি করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git commit -m &quot;add homepage&quot;</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Commit হলো project-এর একটি saved version।</p>
+          <p class="note">💡 <strong>Note:</strong> ছোট logical commit করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Meaningless message যেমন &#x27;update&#x27; বারবার লেখা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">16</span>
+          <h3>Writing Good Commit Messages</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Future history বুঝতে সহজ করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git commit -m &quot;create contact form&quot;</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Good commit message clearly বলে কী change করা হয়েছে।</p>
+          <p class="note">💡 <strong>Note:</strong> Verb দিয়ে শুরু করো: add, fix, update, remove।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Too vague message লেখা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">17</span>
+          <h3>git log</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Commit history দেখা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git log
+git log --oneline</code></pre>
+          <p class="explain"><strong>Explanation:</strong> git log previous commits দেখায়। --oneline short view দেয়।</p>
+          <p class="note">💡 <strong>Note:</strong> History quickly দেখতে --oneline useful।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Long log থেকে বের হতে q চাপতে ভুলে যাওয়া।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">18</span>
+          <h3>git diff</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Commit করার আগে changes compare করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git diff</code></pre>
+          <p class="explain"><strong>Explanation:</strong> git diff unstaged changes line by line দেখায়।</p>
+          <p class="note">💡 <strong>Note:</strong> Commit-এর আগে diff check করলে mistake ধরা পড়ে।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Diff না দেখে unwanted change commit করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">19</span>
+          <h3>git restore</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Unwanted local changes discard করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git restore index.html</code></pre>
+          <p class="explain"><strong>Explanation:</strong> File-এর uncommitted changes আগের অবস্থায় ফিরিয়ে নেয়।</p>
+          <p class="note">💡 <strong>Note:</strong> Use carefully, changes হারিয়ে যেতে পারে।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> ভুল file restore করে দরকারি কাজ হারানো।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">20</span>
+          <h3>git rm</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> File remove করে Git-কে জানানো।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git rm old-file.html</code></pre>
+          <p class="explain"><strong>Explanation:</strong> File delete করে deletion staging area-তে রাখে।</p>
+          <p class="note">💡 <strong>Note:</strong> Git-tracked file remove করতে useful।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Manual delete করে status check না করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">21</span>
+          <h3>.gitignore File</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> অপ্রয়োজনীয়/private file Git থেকে বাদ দেওয়া।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>node_modules/
+.env
+.DS_Store</code></pre>
+          <p class="explain"><strong>Explanation:</strong> .gitignore বলে কোন files/folders Git track করবে না।</p>
+          <p class="note">💡 <strong>Note:</strong> Node project-এ node_modules ignore করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Secret key বা .env commit করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">22</span>
+          <h3>README.md File</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Project explain করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code># My Project
+Simple HTML CSS website.</code></pre>
+          <p class="explain"><strong>Explanation:</strong> README.md project-এর description, setup, usage explain করে।</p>
+          <p class="note">💡 <strong>Note:</strong> GitHub portfolio-তে README খুব important।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Empty repository রেখে README না দেওয়া।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">23</span>
+          <h3>Markdown Basics for README</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> README সুন্দরভাবে format করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code># Title
+## Section
+- Item
+`code`</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Markdown হলো simple formatting syntax। GitHub README markdown render করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Heading, list, code block শিখে নাও।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Plain messy text README-তে লেখা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">24</span>
+          <h3>Branch Meaning</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Main code না ভেঙে আলাদা কাজ করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>main
+feature-navbar</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Branch হলো project-এর আলাদা line of development।</p>
+          <p class="note">💡 <strong>Note:</strong> New feature-এর জন্য branch use করা ভালো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> সব কাজ main branch-এ করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">25</span>
+          <h3>git branch</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Branches list দেখা বা branch তৈরি করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git branch
+git branch feature-login</code></pre>
+          <p class="explain"><strong>Explanation:</strong> git branch existing branches দেখায় এবং নতুন branch বানাতে পারে।</p>
+          <p class="note">💡 <strong>Note:</strong> Current branch-এর পাশে * থাকে।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> কোন branch-এ আছো না দেখে কাজ করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">26</span>
+          <h3>git switch / git checkout</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Branch change করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git switch feature-login
+git checkout main</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Branch বদলাতে switch বা checkout use হয়।</p>
+          <p class="note">💡 <strong>Note:</strong> Modern Git-এ switch বেশি clear।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Unsaved changes রেখে branch switch করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">27</span>
+          <h3>git merge</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> এক branch-এর changes অন্য branch-এ আনা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git switch main
+git merge feature-login</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Merge feature branch-এর কাজ main branch-এ combine করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Merge করার আগে status clean রাখো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Conflict না বুঝে merge করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">28</span>
+          <h3>Merge Conflict Meaning</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Same file-এর same line-এ conflicting change।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+current
+=======
+incoming
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Git automatic merge করতে না পারলে merge conflict হয়।</p>
+          <p class="note">💡 <strong>Note:</strong> Conflict marker দেখে manually ঠিক করতে হয়।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Conflict marker রেখে commit করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">29</span>
+          <h3>How to Solve Merge Conflict</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Conflict ঠিক করে final version save করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>1. Open conflicted file
+2. Choose correct code
+3. Remove markers
+4. git add .
+5. git commit</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Conflict resolve মানে final correct code রেখে conflict markers remove করা।</p>
+          <p class="note">💡 <strong>Note:</strong> Slowly read current and incoming changes।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> না বুঝে সব delete করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">30</span>
+          <h3>git clone</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Remote repo local computer-এ copy করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git clone https://github.com/user/project.git</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Clone GitHub repository তোমার computer-এ download করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Team project শুরু করতে clone common।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> ZIP download করে Git history হারানো।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">31</span>
+          <h3>Remote Repository Meaning</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Online version of repository।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>origin = remote repo nickname</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Remote repository GitHub/GitLab-এর মতো server-এ থাকে।</p>
+          <p class="note">💡 <strong>Note:</strong> Remote থাকলে push/pull করা যায়।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Remote connect না করে push করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">32</span>
+          <h3>git remote add origin</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Local repo-কে GitHub repo-এর সাথে connect করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git remote add origin https://github.com/user/repo.git</code></pre>
+          <p class="explain"><strong>Explanation:</strong> origin নামে remote URL save হয়।</p>
+          <p class="note">💡 <strong>Note:</strong> First push-এর আগে remote add করতে হয়।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Wrong URL add করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">33</span>
+          <h3>git remote -v</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Connected remote URL check করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git remote -v</code></pre>
+          <p class="explain"><strong>Explanation:</strong> fetch এবং push URL দেখায়।</p>
+          <p class="note">💡 <strong>Note:</strong> Push problem হলে remote URL check করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Wrong account/repo URL বুঝতে না পারা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">34</span>
+          <h3>git push</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Local commits GitHub-এ upload করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git push -u origin main
+git push</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Push local commits remote repository-তে পাঠায়।</p>
+          <p class="note">💡 <strong>Note:</strong> First push-এ -u origin main helpful।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Commit ছাড়া push করলে কিছু upload হবে না।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">35</span>
+          <h3>git pull</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Remote latest changes local-এ আনা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git pull origin main</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Pull remote changes download করে এবং merge করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Team project-এ কাজের আগে pull করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Local changes check না করে pull করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">36</span>
+          <h3>git fetch</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Remote updates download কিন্তু merge না করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git fetch</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Fetch remote changes আনে কিন্তু working branch modify করে না।</p>
+          <p class="note">💡 <strong>Note:</strong> Safe checking-এর জন্য fetch useful।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> fetch আর pull একই ভাবা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">37</span>
+          <h3>Pull vs Fetch</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Safe update workflow বুঝা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>fetch = download only
+pull = fetch + merge</code></pre>
+          <p class="explain"><strong>Explanation:</strong> fetch শুধু updates আনে, pull updates এনে local branch-এ merge করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Conflict avoid করতে আগে fetch করে দেখতে পারো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> pull করলে direct merge হয় সেটা না জানা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">38</span>
+          <h3>Origin and Main Branch</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Default remote এবং main branch বোঝা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>origin/main
+main</code></pre>
+          <p class="explain"><strong>Explanation:</strong> origin remote nickname, main usually main/default branch।</p>
+          <p class="note">💡 <strong>Note:</strong> GitHub নতুন repo-তে default branch সাধারণত main।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> master/main confusion করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">39</span>
+          <h3>GitHub Account Basics</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Repository create/share করার জন্য account দরকার।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Create GitHub account
+Set profile
+Verify email</code></pre>
+          <p class="explain"><strong>Explanation:</strong> GitHub account দিয়ে repo create, push, collaborate করা যায়।</p>
+          <p class="note">💡 <strong>Note:</strong> Profile name/photo/README professional রাখো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Unverified email রেখে push issue face করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">40</span>
+          <h3>Creating a GitHub Repository</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Project online রাখার জায়গা তৈরি করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>New repository → name → create</code></pre>
+          <p class="explain"><strong>Explanation:</strong> GitHub repository project files এবং Git history রাখে।</p>
+          <p class="note">💡 <strong>Note:</strong> Repository name simple and meaningful রাখো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Spaces/special characters দিয়ে messy name করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">41</span>
+          <h3>Upload Local Project to GitHub</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> নিজের project GitHub-এ publish করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git init
+git add .
+git commit -m &quot;first commit&quot;
+git remote add origin URL
+git push -u origin main</code></pre>
+          <p class="explain"><strong>Explanation:</strong> এই workflow local project GitHub remote repo-তে upload করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Before push, status and remote check করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Remote add না করে push করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">42</span>
+          <h3>Clone Project from GitHub</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Existing repo local-এ নিয়ে কাজ করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git clone REPO_URL
+cd project-name</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Clone করলে full project + Git history local-এ আসে।</p>
+          <p class="note">💡 <strong>Note:</strong> Fork/clone workflow open source-এ common।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Wrong folder-এ clone করে confusion করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">43</span>
+          <h3>GitHub Commit History</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Project changes online দেখা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>GitHub → repository → Commits</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Commit history-তে কে কখন কী change করেছে দেখা যায়।</p>
+          <p class="note">💡 <strong>Note:</strong> Good commit messages history useful করে।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Messy commit history রাখা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">44</span>
+          <h3>GitHub Issues</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Bug, task, feature track করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Issue: Fix navbar on mobile</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Issues project tasks, bugs, feature requests track করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Solo project-এও task tracking করতে পারো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Task মাথায় রেখে লিখে না রাখা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">45</span>
+          <h3>GitHub Pull Requests</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Code review এবং merge request করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Pull Request: feature branch → main</code></pre>
+          <p class="explain"><strong>Explanation:</strong> PR branch changes review করে main-এ merge করার workflow।</p>
+          <p class="note">💡 <strong>Note:</strong> Team collaboration-এ PR must-know।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Review ছাড়া direct main-এ merge করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">46</span>
+          <h3>Fork Meaning</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> অন্যের repo নিজের account-এ copy করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Fork → clone → change → pull request</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Fork open-source project contribute করতে use হয়।</p>
+          <p class="note">💡 <strong>Note:</strong> Original repo change না করে নিজের copy-তে কাজ করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Fork আর clone একই ভাবা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">47</span>
+          <h3>Star and Watch on GitHub</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Project save/follow করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Star = save/like
+Watch = notifications</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Star দিয়ে project bookmark করা যায়, Watch দিলে update notification পাওয়া যায়।</p>
+          <p class="note">💡 <strong>Note:</strong> Useful repo star করে রাখো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Watch সব repo-তে দিলে notification overload।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">48</span>
+          <h3>GitHub Pages Hosting</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Static website free host করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Settings → Pages → Deploy from branch</code></pre>
+          <p class="explain"><strong>Explanation:</strong> GitHub Pages HTML/CSS/JS static site host করতে পারে।</p>
+          <p class="note">💡 <strong>Note:</strong> Beginner portfolio host করতে excellent।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Wrong branch/folder select করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">49</span>
+          <h3>Hosting Static Website on GitHub Pages</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> HTML/CSS/JS project live করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Push index.html
+Settings → Pages → branch: main → /root</code></pre>
+          <p class="explain"><strong>Explanation:</strong> index.html root folder-এ থাকলে Pages সহজে site serve করে।</p>
+          <p class="note">💡 <strong>Note:</strong> After deploy, live URL check করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> index.html না থাকলে site open নাও হতে পারে।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">50</span>
+          <h3>Netlify Hosting Basics</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Static/frontend project সহজে deploy করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Netlify → Add new site → Import Git repo</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Netlify GitHub repo connect করে auto deploy করতে পারে।</p>
+          <p class="note">💡 <strong>Note:</strong> Simple frontend projects-এর জন্য beginner-friendly।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Build command/output folder ভুল দেওয়া।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">51</span>
+          <h3>Vercel Hosting Basics</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Modern frontend app deploy করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Vercel → New Project → Import GitHub repo</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Vercel React/Next.js/front-end projects deploy করতে popular।</p>
+          <p class="note">💡 <strong>Note:</strong> Framework detect অনেক সময় automatic হয়।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Wrong framework/build setting choose করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">52</span>
+          <h3>GitHub Pages vs Netlify vs Vercel</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> কোন platform কখন use করবো বোঝা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>GitHub Pages = simple static
+Netlify = static/frontend
+Vercel = modern frontend/Next.js</code></pre>
+          <p class="explain"><strong>Explanation:</strong> তিনটিই hosting দেয়, কিন্তু use case আলাদা।</p>
+          <p class="note">💡 <strong>Note:</strong> Beginner HTML/CSS site GitHub Pages-এ শুরু করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> সব hosting platform এক কাজ করে ভাবা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">53</span>
+          <h3>Deploying HTML/CSS/JS Project</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Local project live website বানানো।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>1. Test locally
+2. Push to GitHub
+3. Connect hosting
+4. Deploy
+5. Check live URL</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Deployment মানে project internet-এ publish করা।</p>
+          <p class="note">💡 <strong>Note:</strong> Deploy করার আগে local test করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Broken links/files নিয়ে deploy করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">54</span>
+          <h3>Custom Domain Basics</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> নিজস্ব domain live site-এ connect করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>example.com → hosting DNS settings</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Custom domain মানে default hosting URL বাদ দিয়ে নিজের domain use করা।</p>
+          <p class="note">💡 <strong>Note:</strong> DNS change propagate হতে সময় লাগে।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Wrong DNS record দিলে site কাজ করবে না।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">55</span>
+          <h3>Environment Variables Basics</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Secret/config values safely manage করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>API_KEY=your_key</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Environment variable code-এর বাইরে secret/config রাখে।</p>
+          <p class="note">💡 <strong>Note:</strong> .env file GitHub-এ push করো না।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> API key public repo-তে upload করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">56</span>
+          <h3>SSH vs HTTPS in GitHub</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Remote authentication method বোঝা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>HTTPS: https://github.com/user/repo.git
+SSH: git@github.com:user/repo.git</code></pre>
+          <p class="explain"><strong>Explanation:</strong> HTTPS token/password flow, SSH key-based secure connection use করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Beginner হিসেবে HTTPS দিয়ে শুরু করা সহজ।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> SSH key setup না করে SSH URL use করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">57</span>
+          <h3>Personal Access Token Basics</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> GitHub authentication করার জন্য token।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Use token instead of password when needed</code></pre>
+          <p class="explain"><strong>Explanation:</strong> PAT GitHub authentication-এর জন্য password-এর alternative token।</p>
+          <p class="note">💡 <strong>Note:</strong> Token private রাখো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Token screenshot/share করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">58</span>
+          <h3>VS Code Source Control Panel</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> GUI দিয়ে Git changes manage করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>Ctrl + Shift + G</code></pre>
+          <p class="explain"><strong>Explanation:</strong> VS Code Source Control panel changes, stage, commit, branch দেখতে help করে।</p>
+          <p class="note">💡 <strong>Note:</strong> Terminal command না জানলেও panel helpful।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> GUI use করে command না শেখা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">59</span>
+          <h3>Common Git Mistakes</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Beginner errors quickly avoid করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git status
+git diff
+.gitignore</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Common mistakes: add ভুলে যাওয়া, wrong branch, node_modules push, secrets upload।</p>
+          <p class="note">💡 <strong>Note:</strong> Mistake কমাতে status frequently check করো।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Blindly command run করা।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-title">
+          <span class="num">60</span>
+          <h3>Git, GitHub and Hosting Best Practices</h3>
+        </div>
+        <div class="card-body">
+          <div class="need"><strong>Why needed:</strong> Professional project workflow তৈরি করা।</div>
+          <p class="label">Command / Example</p>
+          <pre><code>git status
+git add .
+git commit -m &quot;clear message&quot;
+git push</code></pre>
+          <p class="explain"><strong>Explanation:</strong> Best practice হলো small commits, clear README, .gitignore, branch workflow, test before deploy।</p>
+          <p class="note">💡 <strong>Note:</strong> Clean history এবং README portfolio value বাড়ায়।</p>
+          <p class="mistake">⚠️ <strong>Mistake:</strong> Untested project deploy করা।</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="section-block shortcut-section">
+      <div class="section-head">
+        <h2>VS Code, Terminal and Git Shortcuts</h2>
+        <p>Project manage, commit, push এবং deploy workflow দ্রুত করার shortcuts/commands</p>
+      </div>
+      <div class="shortcut-grid">
+        
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>1</span><h3>Ctrl + `</h3></div>
+        <p><strong>What it does:</strong> VS Code terminal open করে।</p>
+        <p><strong>Example:</strong> <code>Open integrated terminal</code></p>
+        <p class="tiny-note">💡 Git command চালানোর জন্য quick access।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>2</span><h3>Ctrl + Shift + G</h3></div>
+        <p><strong>What it does:</strong> VS Code Source Control panel open করে।</p>
+        <p><strong>Example:</strong> <code>Open Source Control</code></p>
+        <p class="tiny-note">💡 GUI দিয়ে changes দেখতে useful।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>3</span><h3>Ctrl + S</h3></div>
+        <p><strong>What it does:</strong> Current file save করে।</p>
+        <p><strong>Example:</strong> <code>Save file</code></p>
+        <p class="tiny-note">💡 Commit করার আগে save করতে ভুলবে না।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>4</span><h3>Ctrl + P</h3></div>
+        <p><strong>What it does:</strong> Quick file search করে।</p>
+        <p><strong>Example:</strong> <code>Search file name</code></p>
+        <p class="tiny-note">💡 Large project-এ file দ্রুত খুঁজতে।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>5</span><h3>Ctrl + Shift + P</h3></div>
+        <p><strong>What it does:</strong> Command palette open করে।</p>
+        <p><strong>Example:</strong> <code>Run VS Code commands</code></p>
+        <p class="tiny-note">💡 Git/format/settings command খুঁজতে useful।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>6</span><h3>git status</h3></div>
+        <p><strong>What it does:</strong> Project status check করে।</p>
+        <p><strong>Example:</strong> <code>git status</code></p>
+        <p class="tiny-note">💡 প্রতিটি commit/push-এর আগে run করো।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>7</span><h3>git add .</h3></div>
+        <p><strong>What it does:</strong> সব changes stage করে।</p>
+        <p><strong>Example:</strong> <code>git add .</code></p>
+        <p class="tiny-note">💡 Careful: unnecessary file stage হতে পারে।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>8</span><h3>git commit -m &quot;message&quot;</h3></div>
+        <p><strong>What it does:</strong> Staged changes commit করে।</p>
+        <p><strong>Example:</strong> <code>git commit -m &quot;add navbar&quot;</code></p>
+        <p class="tiny-note">💡 Message clear রাখো।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>9</span><h3>git log --oneline</h3></div>
+        <p><strong>What it does:</strong> Short commit history দেখায়।</p>
+        <p><strong>Example:</strong> <code>git log --oneline</code></p>
+        <p class="tiny-note">💡 History quickly review করতে।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>10</span><h3>git diff</h3></div>
+        <p><strong>What it does:</strong> Commit-এর আগে changes দেখায়।</p>
+        <p><strong>Example:</strong> <code>git diff</code></p>
+        <p class="tiny-note">💡 Mistake ধরতে useful।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>11</span><h3>git branch</h3></div>
+        <p><strong>What it does:</strong> Branches দেখায়।</p>
+        <p><strong>Example:</strong> <code>git branch</code></p>
+        <p class="tiny-note">💡 Current branch-এর পাশে * থাকে।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>12</span><h3>git switch branch-name</h3></div>
+        <p><strong>What it does:</strong> Branch switch করে।</p>
+        <p><strong>Example:</strong> <code>git switch feature-login</code></p>
+        <p class="tiny-note">💡 কোন branch-এ কাজ করছো check করো।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>13</span><h3>git pull</h3></div>
+        <p><strong>What it does:</strong> Remote latest changes আনে।</p>
+        <p><strong>Example:</strong> <code>git pull origin main</code></p>
+        <p class="tiny-note">💡 Team project শুরু করার আগে useful।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>14</span><h3>git push</h3></div>
+        <p><strong>What it does:</strong> Local commits GitHub-এ upload করে।</p>
+        <p><strong>Example:</strong> <code>git push</code></p>
+        <p class="tiny-note">💡 Commit না করলে push করার কিছু থাকবে না।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>15</span><h3>git clone URL</h3></div>
+        <p><strong>What it does:</strong> Remote project local-এ copy করে।</p>
+        <p><strong>Example:</strong> <code>git clone https://github.com/user/repo.git</code></p>
+        <p class="tiny-note">💡 Existing repo নিয়ে কাজ শুরু করতে।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>16</span><h3>git remote -v</h3></div>
+        <p><strong>What it does:</strong> Connected remote URL দেখায়।</p>
+        <p><strong>Example:</strong> <code>git remote -v</code></p>
+        <p class="tiny-note">💡 Wrong remote debug করতে।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>17</span><h3>git restore file-name</h3></div>
+        <p><strong>What it does:</strong> Uncommitted changes discard করে।</p>
+        <p><strong>Example:</strong> <code>git restore index.html</code></p>
+        <p class="tiny-note">💡 Careful: changes হারিয়ে যেতে পারে।</p>
+      </article>
+      <article class="shortcut-card">
+        <div class="shortcut-head"><span>18</span><h3>git merge branch-name</h3></div>
+        <p><strong>What it does:</strong> এক branch অন্য branch-এ merge করে।</p>
+        <p><strong>Example:</strong> <code>git merge feature-navbar</code></p>
+        <p class="tiny-note">💡 Merge করার আগে status clean রাখো।</p>
+      </article>
+      </div>
+    </section>
+
+    <section class="section-block summary-section">
+      <div class="section-head">
+        <h2>Common Git, GitHub and Hosting Mistakes and Best Practices Summary</h2>
+        <p>Real project management-এর জন্য quick correction guide</p>
+      </div>
+      <div class="summary-columns">
+        <div class="summary-box">
+          <h3>Common Mistakes</h3>
+          <ul>
+            <li>Commit করার আগে file save না করা</li><li>git init ভুলে যাওয়া</li><li>git add না করে commit করা</li><li>Unclear commit message লেখা</li><li>Unnecessary files commit করা</li><li>.gitignore ব্যবহার না করা</li><li>node_modules folder upload করা</li><li>Secret keys/passwords upload করা</li><li>সবসময় directly main branch-এ কাজ করা</li><li>Local changes check না করে pull করা</li><li>Merge conflict ভালোভাবে না পড়া</li><li>Conflict markers ভুলভাবে delete করা</li><li>Wrong branch-এ push করা</li><li>git status check না করা</li><li>Git আর GitHub confuse করা</li><li>Wrong remote URL set করা</li><li>README.md add না করা</li><li>Local test ছাড়া deploy করা</li><li>Wrong build/output folder দেওয়া</li><li>Live website deploy-এর পর check না করা</li>
+          </ul>
+        </div>
+        <div class="summary-box">
+          <h3>Best Practices</h3>
+          <ul>
+            <li>Clear project folder structure রাখো</li><li>Meaningful commit messages লিখো</li><li>Small logical commits করো</li><li>git status frequently check করো</li><li>.gitignore properly use করো</li><li>README.md updated রাখো</li><li>Passwords/API keys upload করো না</li><li>New feature-এর জন্য branch use করো</li><li>কাজ শুরুর আগে latest changes pull করো</li><li>Commit করার আগে code review করো</li><li>Push করার আগে project test করো</li><li>Merge conflicts carefully resolve করো</li><li>GitHub repository description দাও</li><li>GitHub Issues দিয়ে task track করো</li><li>Collaboration-এ Pull Request use করো</li><li>main branch stable রাখো</li><li>Simple static site-এর জন্য GitHub Pages use করো</li><li>Modern frontend deployment-এ Netlify/Vercel use করো</li><li>Hosting fail করলে deployment logs check করো</li><li>Project name simple and meaningful রাখো</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block viva-section">
+      <div class="section-head">
+        <h2>Git, GitHub and Hosting Viva Questions and Answers</h2>
+        <p>Beginner-level viva/interview preparation — short and easy to memorize</p>
+      </div>
+      <div class="viva-grid">
+        
+      <article class="viva-card">
+        <h3>Q1. Version control কী?</h3>
+        <p><strong>Answer:</strong> Version control হলো code changes track করার system, যাতে previous version-এ ফিরতে পারি।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q2. Git কী?</h3>
+        <p><strong>Answer:</strong> Git হলো distributed version control system যা local computer-এ code history manage করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q3. GitHub কী?</h3>
+        <p><strong>Answer:</strong> GitHub হলো online platform যেখানে Git repositories store, share এবং collaborate করা যায়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q4. Git এবং GitHub-এর difference কী?</h3>
+        <p><strong>Answer:</strong> Git local version control tool, GitHub online hosting platform for Git repositories।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q5. Source control কী?</h3>
+        <p><strong>Answer:</strong> Source control মানে source code changes manage, track এবং share করা।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q6. Developers Git কেন use করে?</h3>
+        <p><strong>Answer:</strong> Code history, collaboration, backup, branch workflow এবং rollback-এর জন্য Git use করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q7. Repository কী?</h3>
+        <p><strong>Answer:</strong> Repository হলো project folder plus Git history।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q8. Local repository এবং remote repository-এর difference কী?</h3>
+        <p><strong>Answer:</strong> Local repo computer-এ থাকে, remote repo GitHub-এর মতো online platform-এ থাকে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q9. Working directory কী?</h3>
+        <p><strong>Answer:</strong> যেখানে তুমি actual files edit করো সেটি working directory।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q10. Staging area কী?</h3>
+        <p><strong>Answer:</strong> Commit করার আগে selected changes রাখার middle area হলো staging area।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q11. Commit কী?</h3>
+        <p><strong>Answer:</strong> Commit হলো project-এর saved snapshot/version।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q12. git init কী করে?</h3>
+        <p><strong>Answer:</strong> Current folder-কে Git repository বানায়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q13. git status কী দেখায়?</h3>
+        <p><strong>Answer:</strong> Modified, staged, untracked files এবং current branch status দেখায়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q14. git add কী করে?</h3>
+        <p><strong>Answer:</strong> File changes staging area-তে রাখে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q15. git commit কী করে?</h3>
+        <p><strong>Answer:</strong> Staged changes repository history-তে save করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q16. Good commit message কেমন?</h3>
+        <p><strong>Answer:</strong> Short, clear এবং action-based: যেমন &#x27;add contact form&#x27;।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q17. git log কী দেখায়?</h3>
+        <p><strong>Answer:</strong> Commit history দেখায়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q18. git diff কী?</h3>
+        <p><strong>Answer:</strong> Commit করার আগে file changes compare করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q19. .gitignore কী?</h3>
+        <p><strong>Answer:</strong> যেসব file/folder Git track করবে না তা .gitignore-এ লেখা হয়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q20. node_modules push করা উচিত না কেন?</h3>
+        <p><strong>Answer:</strong> এটি খুব বড় এবং package manager দিয়ে আবার install করা যায়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q21. README.md কী?</h3>
+        <p><strong>Answer:</strong> Project description, setup, usage explain করার file।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q22. Markdown কী?</h3>
+        <p><strong>Answer:</strong> Simple text formatting syntax, README সুন্দর করতে use হয়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q23. Branch কী?</h3>
+        <p><strong>Answer:</strong> Project-এর আলাদা line of development।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q24. Branch কেন use করি?</h3>
+        <p><strong>Answer:</strong> Main code না ভেঙে new feature/experiment করতে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q25. main branch এবং feature branch-এর difference কী?</h3>
+        <p><strong>Answer:</strong> main stable production code, feature branch new work-এর জন্য।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q26. git merge কী?</h3>
+        <p><strong>Answer:</strong> এক branch-এর changes অন্য branch-এ combine করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q27. Merge conflict কী?</h3>
+        <p><strong>Answer:</strong> Git automatic merge করতে না পারলে conflict হয়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q28. Merge conflict কীভাবে solve করো?</h3>
+        <p><strong>Answer:</strong> Conflict file open করে correct code রাখি, markers remove করি, add এবং commit করি।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q29. git clone কী?</h3>
+        <p><strong>Answer:</strong> Remote repository local computer-এ copy করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q30. remote origin কী?</h3>
+        <p><strong>Answer:</strong> origin হলো remote repository-এর default nickname।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q31. git remote -v কী দেখায়?</h3>
+        <p><strong>Answer:</strong> Connected remote URLs দেখায়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q32. git push কী?</h3>
+        <p><strong>Answer:</strong> Local commits remote repository-তে upload করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q33. git pull কী?</h3>
+        <p><strong>Answer:</strong> Remote changes local branch-এ download এবং merge করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q34. git pull এবং git fetch-এর difference কী?</h3>
+        <p><strong>Answer:</strong> fetch শুধু download করে, pull fetch + merge করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q35. GitHub repository কী?</h3>
+        <p><strong>Answer:</strong> GitHub-এ hosted project repository।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q36. Project GitHub-এ কীভাবে upload করো?</h3>
+        <p><strong>Answer:</strong> git init, add, commit, remote add, push workflow follow করি।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q37. GitHub Issues কী?</h3>
+        <p><strong>Answer:</strong> Bug, task, feature request track করার system।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q38. Pull Request কী?</h3>
+        <p><strong>Answer:</strong> Branch changes review করে merge করার request।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q39. Fork কী?</h3>
+        <p><strong>Answer:</strong> অন্যের repo নিজের GitHub account-এ copy করা।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q40. GitHub Pages কী?</h3>
+        <p><strong>Answer:</strong> Static websites host করার GitHub feature।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q41. Hosting কী?</h3>
+        <p><strong>Answer:</strong> Website files internet-এ accessible করার process।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q42. Deployment কী?</h3>
+        <p><strong>Answer:</strong> Project live server/hosting platform-এ publish করা।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q43. GitHub Pages, Netlify, Vercel-এর difference কী?</h3>
+        <p><strong>Answer:</strong> GitHub Pages simple static site, Netlify static/frontend, Vercel modern frontend/Next.js projects-এর জন্য popular।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q44. GitHub Pages-এ কী type project host করা যায়?</h3>
+        <p><strong>Answer:</strong> Static HTML/CSS/JS website host করা যায়।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q45. Build folder কী?</h3>
+        <p><strong>Answer:</strong> Production-ready generated output folder, যেমন dist বা build।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q46. Custom domain কী?</h3>
+        <p><strong>Answer:</strong> Hosting default URL বাদ দিয়ে নিজের domain use করা।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q47. Environment variable কী?</h3>
+        <p><strong>Answer:</strong> Secret/config value code-এর বাইরে রাখার way।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q48. SSH এবং HTTPS-এর difference কী?</h3>
+        <p><strong>Answer:</strong> HTTPS token-based URL use করে, SSH key-based authentication use করে।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q49. Personal Access Token কী?</h3>
+        <p><strong>Answer:</strong> GitHub authentication-এর জন্য password alternative token।</p>
+      </article>
+      <article class="viva-card">
+        <h3>Q50. VS Code Source Control panel কী?</h3>
+        <p><strong>Answer:</strong> VS Code-এর Git GUI panel, যেখানে changes, staging, commit দেখা যায়।</p>
+      </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Git, Source Control, GitHub and Hosting Cheat Sheet • Created by <span>Eng. P</span></p>
+  </footer>
+</body>
+</html>
