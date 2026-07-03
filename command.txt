@@ -55,3 +55,6 @@ when you uses next then use only this three command
 git add .
 git commit -m "meaningful name"
 git push                           (not -u origin main)
+-----------------------------
+must have 
+index.html file if any html file, then you can add others name html file
