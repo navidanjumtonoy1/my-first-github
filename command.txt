@@ -49,3 +49,9 @@ file er pashe u mane untruck orthat ekhono truck kora hoy ni. add korar por truc
 see-2
 
 git remote -v     bolle bole dibe kothay jasse
+---------------------
+
+when you uses next then use only this three command
+git add .
+git commit -m "meaningful name"
+git push                           (not -u origin main)
